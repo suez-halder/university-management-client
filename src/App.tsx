@@ -1,10 +1,7 @@
+import MainLayout from "./components/layout/MainLayout";
+
 const App = () => {
-    return (
-        <div>
-            <h1>React-Redux </h1>
-            <p>File Structure</p>
-        </div>
-    );
+    return <MainLayout />;
 };
 
 export default App;
