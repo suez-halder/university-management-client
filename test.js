@@ -35,6 +35,8 @@ const adminPaths2 = [
     },
 ];
 
+//! Generating Routes
+
 const newArray = adminPaths2.reduce((acc, item) => {
     if (item.path && item.element) {
         acc.push({
@@ -55,4 +57,30 @@ const newArray = adminPaths2.reduce((acc, item) => {
     return acc;
 }, []);
 
-console.dir(newArray, { depth: Infinity });
+// console.dir(newArray, { depth: Infinity });
+
+//! Generating Sidebar
+
+const newArray2 = adminPaths2.reduce((acc, item) => {
+    if (item.path && item.name) {
+        acc.push({
+            key: item.name,
+            label: "NAVLINK",
+        });
+    }
+
+    if (item.children) {
+        acc.push({
+            key: item.name,
+            label: item.name,
+            children: item.children.map((child) => ({
+                key: child.name,
+                label: child.path,
+            })),
+        });
+    }
+
+    return acc;
+}, []);
+
+console.dir(newArray2, { depth: Infinity });
