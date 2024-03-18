@@ -3,7 +3,7 @@ import FacultyDashboard from "../pages/faculty/FacultyDashboard";
 const facultyPaths = [
     {
         name: "Dashboard",
-        path: "/faculty/dashboard",
+        path: "dashboard",
         element: <FacultyDashboard />,
     },
 ];
