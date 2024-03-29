@@ -14,13 +14,22 @@ type TFormProps = {
 
 type TFormConfig = {
     defaultValues?: Record<string, unknown>;
+    resolver?: any;
 };
 
-const UMForm = ({ onSubmit, children, defaultValues }: TFormProps) => {
+const UMForm = ({
+    onSubmit,
+    children,
+    defaultValues,
+    resolver,
+}: TFormProps) => {
     const formConfig: TFormConfig = {};
 
     if (defaultValues) {
         formConfig["defaultValues"] = defaultValues;
+    }
+    if (resolver) {
+        formConfig["resolver"] = resolver;
     }
 
     const methods = useForm(formConfig);

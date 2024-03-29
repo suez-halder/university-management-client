@@ -4,23 +4,30 @@ import { Controller } from "react-hook-form";
 type TSelectProps = {
     label: string;
     name: string;
+    options: {
+        value: string;
+        label: string;
+        disabled?: boolean;
+    }[];
 };
 
-const UMSelect = ({ label, name }: TSelectProps) => {
+const UMSelect = ({ label, name, options }: TSelectProps) => {
     return (
         <Controller
             name={name}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
                 <Form.Item label={label}>
                     <Select
                         style={{ width: "100%" }}
                         {...field}
-                        options={[
-                            { value: "jack", label: "Jack" },
-                            { value: "lucy", label: "Lucy" },
-                            { value: "Yiminghe", label: "yiminghe" },
-                        ]}
+                        options={options}
+                        size="large"
                     />
+                    {error && (
+                        <small style={{ color: "red", fontSize: "14px" }}>
+                            {error.message}
+                        </small>
+                    )}
                 </Form.Item>
             )}
         />
