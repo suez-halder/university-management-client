@@ -1,19 +1,21 @@
 import { Table, TableColumnsType, TableProps } from "antd";
+import { useState } from "react";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
+import { TAcademicSemester } from "../../../types/academicManagement.type";
 
-interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-}
+export type TTableData = Pick<
+    TAcademicSemester,
+    "name" | "year" | "startMonth" | "endMonth"
+>;
 
 const AcademicSemester = () => {
-    const { data: semesterData } = useGetAllSemestersQuery(undefined);
+    const [params, setParams] = useState([]);
 
-    const semesterTableData = semesterData?.data!.map(
+    const { data: semesterData } = useGetAllSemestersQuery(params);
+
+    const semesterTableData = semesterData?.data?.map(
         ({ _id, name, startMonth, endMonth, year }) => ({
-            _id,
+            key: _id,
             name,
             year,
             startMonth,
@@ -21,18 +23,22 @@ const AcademicSemester = () => {
         })
     );
 
-    const columns: TableColumnsType<DataType> = [
+    const columns: TableColumnsType<TTableData> = [
         {
             title: "Name",
             dataIndex: "name",
             filters: [
                 {
-                    text: "Name",
-                    value: "name",
+                    text: "Autumn",
+                    value: "Autumn",
                 },
                 {
-                    text: "Year",
-                    value: "year",
+                    text: "Summer",
+                    value: "Summer",
+                },
+                {
+                    text: "Fall",
+                    value: "Fall",
                 },
             ],
         },
@@ -50,13 +56,21 @@ const AcademicSemester = () => {
         },
     ];
 
-    const onChange: TableProps<DataType>["onChange"] = (
+    const onChange: TableProps<TTableData>["onChange"] = (
         pagination,
         filters,
         sorter,
         extra
     ) => {
-        console.log(filters);
+        if (extra.action === "filter") {
+            const queryParams = [];
+
+            filters.name?.forEach((item) =>
+                queryParams.push({ name: "name", value: item })
+            );
+
+            setParams(queryParams);
+        }
     };
 
     return (
