@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSemesterSchema } from "../../../schemas/academicManagement.schema";
 import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
+import { TResponse } from "../../../types";
 
 const currentYear = new Date().getFullYear();
 
@@ -22,6 +23,8 @@ const CreateAcademicSemester = () => {
     const [addAcademicSemester] = useAddAcademicSemesterMutation();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const toastId = toast.loading("Semester creating...");
+
         const name = semesterOptions[Number(data.name) - 1]?.label;
 
         const semesterData = {
@@ -33,10 +36,16 @@ const CreateAcademicSemester = () => {
         };
 
         try {
-            const res = await addAcademicSemester(semesterData);
-            console.log(res);
+            const res = (await addAcademicSemester(semesterData)) as TResponse;
+            if (res.error) {
+                toast.error(res.error.data.message, { id: toastId });
+            } else {
+                toast.success("Semester created successfully!", {
+                    id: toastId,
+                });
+            }
         } catch (error) {
-            toast.error("Something went wrong!");
+            toast.error("Something went wrong!", { id: toastId });
         }
     };
 
