@@ -26,7 +26,7 @@ const CreateAcademicSemester = () => {
 
         const name = semesterOptions[Number(data.name) - 1]?.label;
 
-        const semesterData = {
+        const academicSemesterData = {
             name,
             code: data.name,
             year: data.year,
@@ -36,7 +36,7 @@ const CreateAcademicSemester = () => {
 
         try {
             const res = (await addAcademicSemester(
-                semesterData
+                academicSemesterData
             )) as TResponse<TAcademicSemester>;
             if (res.error) {
                 toast.error(res.error.data.message, { id: toastId });

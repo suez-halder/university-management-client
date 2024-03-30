@@ -14,7 +14,7 @@ const AcademicFaculty = () => {
     const academicFacultyTableData = academicFacultyData?.data?.map(
         ({ _id, name }) => ({
             key: _id,
-            name: `${name} `,
+            name,
         })
     );
 
