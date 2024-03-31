@@ -1,6 +1,7 @@
 import { useGetAllStudentQuery } from "../../../redux/features/admin/userManagement.api";
 import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
 import { TStudentData } from "../../../types/userManagement.type";
+import { Link } from "react-router-dom";
 
 export type TTableData = Pick<TStudentData, "fullName" | "id">;
 
@@ -29,11 +30,14 @@ const StudentData = () => {
         {
             title: "Action",
             key: "x",
-            render: () => {
+            render: (item) => {
+                console.log(item);
                 return (
                     <Space>
                         <Button>Update</Button>
-                        <Button>Details</Button>
+                        <Link to={`/admin/student-data/${item.key}`}>
+                            <Button>Details</Button>
+                        </Link>
                         <Button>Block</Button>
                     </Space>
                 );
