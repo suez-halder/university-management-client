@@ -118,19 +118,23 @@ const CreateStudent = () => {
     }));
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        console.log(data);
+        // console.log(data);
 
-        // const studentData = {
-        //     password: "student123",
-        //     student: data,
-        // };
+        const studentData = {
+            password: "student123",
+            student: data,
+        };
 
-        // const formData = new FormData();
+        const formData = new FormData();
 
-        // formData.append("data", JSON.stringify(studentData));
+        formData.append("data", JSON.stringify(studentData));
+        formData.append("file", data.profileImg);
+
+        const res = await addStudent(formData);
+        console.log(res);
 
         //! This is for development - just for checking
-        // await addStudent(Object.fromEntries(formData));
+        // console.log(Object.fromEntries(formData));
     };
 
     return (
@@ -179,18 +183,20 @@ const CreateStudent = () => {
                         <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
                             <Controller
                                 name="profileImg"
-                                render={({ field: { onChange, ...field } }) => {
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <Form.Item label="Profile Picture">
                                         <Input
+                                            value={value?.fileName}
                                             type="file"
                                             {...field}
                                             onChange={(e) =>
                                                 onChange(e.target.files?.[0])
                                             }
                                         />
-                                        ;
-                                    </Form.Item>;
-                                }}
+                                    </Form.Item>
+                                )}
                             />
                         </Col>
 
