@@ -29,3 +29,24 @@ export const academicDepartmentSchema = z.object({
         required_error: "Academic faculty is required",
     }),
 });
+
+// export const semesterRegistrationSchema = z.object({
+//     academicSemester: z.string({
+//         required_error: "Academic semester is required",
+//     }),
+//     status: z.string({
+//         required_error: "Status is required",
+//     }),
+//     // startDate: z.string({
+//     //     required_error: "Start date is required",
+//     // }),
+//     // endDate: z.string({
+//     //     required_error: "End date is required",
+//     // }),
+//     minCredit: z.number({
+//         required_error: "Minimum credit is required",
+//     }),
+//     maxCredit: z.number({
+//         required_error: "Maximum credit is required",
+//     }),
+// });
