@@ -32,4 +32,7 @@ const courseManagementApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddSemesterRegistrationMutation } = courseManagementApi;
+export const {
+    useAddSemesterRegistrationMutation,
+    useGetAllRegisteredSemesterQuery,
+} = courseManagementApi;

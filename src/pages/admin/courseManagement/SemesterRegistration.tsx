@@ -2,13 +2,13 @@ import { Button, Col, Flex } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import UMForm from "../../../components/form/UMForm";
 import UMSelect from "../../../components/form/UMSelect";
-import { semesterStatusOptions } from "../../../constants/global.constant";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
 import { TResponse } from "../../../types";
 import UMDatePicker from "../../../components/form/UMDatePicker";
 import UMInput from "../../../components/form/UMInput";
 import { useAddSemesterRegistrationMutation } from "../../../redux/features/admin/courseManagement.api";
+import { semesterStatusOptions } from "../../../constants/semester.constant";
 
 const SemesterRegistration = () => {
     const { data: academicSemester } = useGetAllSemestersQuery([
