@@ -1,20 +1,45 @@
 import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
 
-import { useGetAllRegisteredSemesterQuery } from "../../../redux/features/admin/courseManagement.api";
-import { TSemesterRegistration } from "../../../types";
+import {
+    useGetAllRegisteredSemesterQuery,
+    useUpdateRegisteredSemesterMutation,
+} from "../../../redux/features/admin/courseManagement.api";
+import { TResponse, TSemesterRegistration } from "../../../types";
 import { format } from "date-fns";
+import { useState } from "react";
+import { toast } from "sonner";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export type TTableData = Pick<
     TSemesterRegistration,
     "academicSemester" | "status" | "startDate" | "endDate"
 >;
 
+const items = [
+    {
+        label: "UPCOMING",
+        key: "UPCOMING",
+    },
+    {
+        label: "ONGOING",
+        key: "ONGOING",
+    },
+    {
+        label: "ENDED",
+        key: "ENDED",
+    },
+];
+
 const RegisteredSemesters = () => {
+    const [semesterId, setSemesterId] = useState("");
+
     const {
         data: registeredSemesterData,
 
         isFetching,
     } = useGetAllRegisteredSemesterQuery(undefined);
+
+    const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
 
     const registeredSemesterTableData = registeredSemesterData?.data?.map(
         ({ _id, academicSemester, status, startDate, endDate }) => ({
@@ -27,6 +52,41 @@ const RegisteredSemesters = () => {
             endDate: format(new Date(endDate), "do MMM, yyyy"),
         })
     );
+
+    const handleStatusUpdate: SubmitHandler<FieldValues> = async (data) => {
+        const toastId = toast.loading("Updating status...");
+
+        const updateData = {
+            id: semesterId,
+            data: {
+                status: data.key,
+            },
+        };
+
+        console.log(updateData);
+
+        try {
+            const res = (await updateSemesterStatus(
+                updateData
+            )) as TResponse<any>;
+            if (res.error) {
+                toast.error(res.error.data.message, { id: toastId });
+            } else {
+                toast.success("Semester status changed successfully!", {
+                    id: toastId,
+                });
+            }
+
+            console.log(res);
+        } catch (error) {
+            toast.error("Something went wrong!", { id: toastId });
+        }
+    };
+
+    const menuProps = {
+        items,
+        onClick: handleStatusUpdate,
+    };
 
     const columns: TableColumnsType<TTableData> = [
         {
@@ -62,11 +122,13 @@ const RegisteredSemesters = () => {
         {
             title: "Action",
             key: "x",
-            render: () => {
+            render: (item) => {
                 return (
-                    <div>
-                        <Dropdown>Change Status</Dropdown>
-                    </div>
+                    <Dropdown menu={menuProps} trigger={["click"]}>
+                        <Button onClick={() => setSemesterId(item.key)}>
+                            Change Status
+                        </Button>
+                    </Dropdown>
                 );
             },
         },
