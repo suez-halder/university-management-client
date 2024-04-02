@@ -63,8 +63,6 @@ const RegisteredSemesters = () => {
             },
         };
 
-        console.log(updateData);
-
         try {
             const res = (await updateSemesterStatus(
                 updateData

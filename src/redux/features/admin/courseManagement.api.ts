@@ -10,6 +10,7 @@ const courseManagementApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["semester"],
         }),
 
         getAllRegisteredSemester: builder.query({
@@ -19,6 +20,8 @@ const courseManagementApi = baseApi.injectEndpoints({
                     method: "GET",
                 };
             },
+
+            providesTags: ["semester"],
 
             transformResponse: (
                 response: TResponseRedux<TSemesterRegistration[]>
@@ -36,6 +39,7 @@ const courseManagementApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: args.data,
             }),
+            invalidatesTags: ["semester"],
         }),
     }),
 });
